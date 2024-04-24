@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Address Detection</title>
+</head>
+<body>
+    <p>Your IP address is: <span id="ip"></span></p>
+
+    <script>
+        // Функция для получения IP-адреса
+        function getIPAddress() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ip').innerText = data.ip;
+                    // Дополнительные действия, например, отправка на сервер
+                    saveIPAddress(data.ip);
+                })
+                .catch(error => console.error('Error fetching IP address:', error));
+        }
+
+        // Функция для сохранения IP-адреса на сервере
+        function saveIPAddress(ip) {
+            // Пример отправки данных на сервер
+            // Это требует серверной части для обработки запроса
+            // Например, использование Node.js с Express
+            fetch('/save-ip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ip: ip })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log('IP address saved successfully');
+            })
+            .catch(error => console.error('Error saving IP address:', error));
+        }
+
+        // Вызов функции для получения IP-адреса при загрузке страницы
+        getIPAddress();
+    </script>
+</body>
+</html>
